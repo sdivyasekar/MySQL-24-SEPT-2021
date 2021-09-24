@@ -1,0 +1,71 @@
+mysql> use Employee;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select* from Employeelist;
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    2 | Anu     |  15000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select name,salary from the Employeelist where salary=(select min(salary)from Employeelist);
+ERROR 1146 (42S02): Table 'Employee.the' doesn't exist
+mysql> select name,salary from Employeelist where salary=(select min(salary)from
+ Employeelist);
++------+--------+
+| name | salary |
++------+--------+
+| Anu  |  15000 |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> select name,salary from Employeelist where salary=(select max(salary)from
+ Employeelist);
++------+--------+
+| name | salary |
++------+--------+
+| Anu  |  42000 |
++------+--------+
+1 row in set (0.01 sec)
+
+mysql> select max(salary) from Employeelist where salary<(select max(salary)from
+ Employeelist);
++-------------+
+| max(salary) |
++-------------+
+|       25000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name from Employeelist where salary=(select max(salary)from Employees where salary<(select max(salary) from Employeelist));
+ERROR 1146 (42S02): Table 'Employee.Employees' doesn't exist
+mysql> select * from Employeelist;
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    2 | Anu     |  15000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select name from Employeelist where salary=(select max(salary)from Employeelist where salary<(select max(salary) from Employeelist));
++-------+
+| name  |
++-------+
+| Kumar |
++-------+
+1 row in set (0.00 sec)
+
+

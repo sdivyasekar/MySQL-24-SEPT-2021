@@ -1,0 +1,148 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| demo               |
+| employee           |
+| info               |
+| information_schema |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| stdinfo            |
+| sys                |
+| team               |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> create a database salary;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'a database salary' at line 1
+mysql> create database salary;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use salary;
+Database changed
+mysql> create table salarylist(id int,name varchar(10),salary int);
+Query OK, 0 rows affected (0.09 sec)
+
+mysql> desc salarylist;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int         | YES  |     | NULL    |       |
+| name   | varchar(10) | YES  |     | NULL    |       |
+| salary | int         | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into salarylist values(1,"Priya",10000),(2,"Janani",15000),(3,"Kumar",20000),(4,"saravana",25000),(5,"Mona",22000);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from salarylist;
++------+----------+--------+
+| id   | name     | salary |
++------+----------+--------+
+|    1 | Priya    |  10000 |
+|    2 | Janani   |  15000 |
+|    3 | Kumar    |  20000 |
+|    4 | saravana |  25000 |
+|    5 | Mona     |  22000 |
++------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(salary);
+ERROR 1054 (42S22): Unknown column 'salary' in 'field list'
+mysql> select Sum(salary) from salarylist;
++-------------+
+| Sum(salary) |
++-------------+
+|       92000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select Min(salary) from salarylist;
++-------------+
+| Min(salary) |
++-------------+
+|       10000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name,max(salary) from salarylist;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'salary.salarylist.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select max(salary) from salarylist;
++-------------+
+| max(salary) |
++-------------+
+|       25000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select count(salary) from salarylist;
++---------------+
+| count(salary) |
++---------------+
+|             5 |
++---------------+
+1 row in set (0.00 sec)
+
+mysql> select name,sum(salary) from salarylist
+    -> group by name;
++----------+-------------+
+| name     | sum(salary) |
++----------+-------------+
+| Priya    |       10000 |
+| Janani   |       15000 |
+| Kumar    |       20000 |
+| saravana |       25000 |
+| Mona     |       22000 |
++----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> insert into salarylist values(6,"priya",5000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select name,sum(salary) from salarylist
+    -> group by name;
++----------+-------------+
+| name     | sum(salary) |
++----------+-------------+
+| Priya    |       15000 |
+| Janani   |       15000 |
+| Kumar    |       20000 |
+| saravana |       25000 |
+| Mona     |       22000 |
++----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql> select name,Max(salary) from salarylist;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'salary.salarylist.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select * from salarylist order by name;
++------+----------+--------+
+| id   | name     | salary |
++------+----------+--------+
+|    2 | Janani   |  15000 |
+|    3 | Kumar    |  20000 |
+|    5 | Mona     |  22000 |
+|    1 | Priya    |  10000 |
+|    6 | priya    |   5000 |
+|    4 | saravana |  25000 |
++------+----------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from salarylist order by salary Desc;
++------+----------+--------+
+| id   | name     | salary |
++------+----------+--------+
+|    4 | saravana |  25000 |
+|    5 | Mona     |  22000 |
+|    3 | Kumar    |  20000 |
+|    2 | Janani   |  15000 |
+|    1 | Priya    |  10000 |
+|    6 | priya    |   5000 |
++------+----------+--------+
+6 rows in set (0.00 sec)
+
+mysql> 
+

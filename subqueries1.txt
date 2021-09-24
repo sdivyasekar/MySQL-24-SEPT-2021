@@ -1,0 +1,138 @@
+mysql> use Employee;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from employeelist;
+ERROR 1146 (42S02): Table 'Employee.employeelist' doesn't exist
+mysql> show tables;
++--------------------+
+| Tables_in_Employee |
++--------------------+
+| Employeelist       |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select * from Employeelist;
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    2 | Anu     |  15000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
++------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select salary from Employeelist where name="Kavitha";
++--------+
+| salary |
++--------+
+|  22000 |
++--------+
+1 row in set (0.00 sec)
+
+mysql> select name from Employeelist where salary>(
+    -> select salary from Employeelist where name="Kavitha");
++---------+
+| name    |
++---------+
+| Dhinesh |
+| Kumar   |
++---------+
+2 rows in set (0.00 sec)
+
+mysql> select name,salary from Employeelist where salary>( select salary from Employeelist where name="Kavitha");
++---------+--------+
+| name    | salary |
++---------+--------+
+| Dhinesh |  23001 |
+| Kumar   |  25000 |
++---------+--------+
+2 rows in set (0.00 sec)
+mysql> update Employeeslist set salary=salary+1 where emp_id=(select emp_id from Employeelist  where name="Kavitha");
+ERROR 1146 (42S02): Table 'Employee.Employeeslist' doesn't exist
+mysql> select id from Employeelist where name="Dhinesh";
++------+
+| id   |
++------+
+|    4 |
++------+
+1 row in set (0.00 sec)
+
+mysql> select name,salary from Employeelist where id=3;
++---------+--------+
+| name    | salary |
++---------+--------+
+| Kavitha |  22000 |
++---------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into Employeelist values(6,"Anu",42000);
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from Employeelist;
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    2 | Anu     |  15000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Employeelist where name="Anu";
++------+------+--------+
+| id   | name | salary |
++------+------+--------+
+|    2 | Anu  |  15000 |
+|    6 | Anu  |  42000 |
++------+------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select id,name,salary from Employeelist where salary>all(select salary from employeelist where name="Anu");
+ERROR 1146 (42S02): Table 'Employee.employeelist' doesn't exist
+mysql> select id,name,salary from Employeelist where salary>all(select salary from employeelist where name="Priya");
+ERROR 1146 (42S02): Table 'Employee.employeelist' doesn't exist
+mysql> select * from Employeelist;
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    2 | Anu     |  15000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select id,name,salary from Employeelist where salary>all(select salary from Employeelist where name="Priya");
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select id,name,salary from Employeelist where salary>any(select salary from Employeelist where name="Anu");
++------+---------+--------+
+| id   | name    | salary |
++------+---------+--------+
+|    1 | Priya   |  20000 |
+|    3 | Kavitha |  22000 |
+|    4 | Dhinesh |  23001 |
+|    5 | Kumar   |  25000 |
+|    6 | Anu     |  42000 |
++------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> 
+
